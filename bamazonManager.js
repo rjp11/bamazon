@@ -86,7 +86,7 @@ function lowInventory() {
     });
 };
 
-function addInventory() {
+function addProduct() {
     inquirer.prompt([{
         name: "newProduct",
         type: "input",
@@ -126,7 +126,7 @@ function addInventory() {
     })
 };
 
-function addProduct() {
+function addInventory() {
     console.log("Add New Products");
     runManager();
 };
