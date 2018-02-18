@@ -19,6 +19,7 @@
   "homepage": "https://github.com/rjp11/bamazon#readme",
   "dependencies": {
     "inquirer": "^5.1.0",
+    "is-number": "^5.0.0",
     "mysql": "^2.15.0"
   }
 }
