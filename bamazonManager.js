@@ -87,11 +87,46 @@ function lowInventory() {
 };
 
 function addInventory() {
-    console.log("Add to inventory");
-    runManager();
+    inquirer.prompt([{
+        name: "newProduct",
+        type: "input",
+        message: "Enter new product name: "
+    },
+    {
+        name: "newDept",
+        type: "list",
+        message: "Enter department of new item: ",
+        choices: [
+            "camping",
+            "accessories",
+            "apparel"
+        ]
+    },
+    {
+        name: "newPrice",
+        type: "input",
+        message: "Enter price of new item: "
+    },
+    {
+        name: "newQuantity",
+        type: "input",
+        message: "Enter quantity of new item: "
+    }])
+    .then( function(answer){
+        var query = `INSERT INTO products (product_name, department_name, price, stock_quantity) 
+        VALUES ("${answer.newProduct}", "${answer.newDept}", ${Number(answer.newPrice)}, ${answer.newQuantity});`
+
+        connection.query(query, function(err){
+            if (err) throw err;
+            console.log("Item added successfully!");
+            
+            runManager();
+
+        });
+    })
 };
 
 function addProduct() {
     console.log("Add New Products");
-    process.exit();
+    runManager();
 };
