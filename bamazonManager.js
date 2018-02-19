@@ -2,8 +2,6 @@ var mysql = require("mysql");
 var inquirer = require("inquirer");
 var isNumber = require('is-number');
 
-var products = [];
-
 var connection = mysql.createConnection({
     host: "localhost",
     port: 3306,
