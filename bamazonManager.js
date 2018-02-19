@@ -1,5 +1,8 @@
 var mysql = require("mysql");
 var inquirer = require("inquirer");
+var isNumber = require('is-number');
+
+var products = [];
 
 var connection = mysql.createConnection({
     host: "localhost",
@@ -17,37 +20,38 @@ connection.connect(function (err) {
 
 function runManager() {
     inquirer.prompt({
-            name: "managerOptions",
-            type: "list",
-            message: "Select an option",
-            choices: [
-                "View Products for Sale",
-                "View Low Inventory",
-                "Add To Inventory",
-                "Add New Products",
-                "Exit"
+        name: "managerOptions",
+        type: "list",
+        message: "Select an option",
+        choices: [
+            "View Products for Sale",
+            "View Low Inventory",
+            "Add To Inventory",
+            "Add New Products",
+            "Exit"
             ]
-        })
-        .then(function (answer) {
-            switch (answer.managerOptions) {
-                case "View Products for Sale":
-                    printInventory();
-                    break;
-                case "View Low Inventory":
-                    lowInventory();
-                    break;
-                case "Add To Inventory":
-                    addInventory();
-                    break;
-                case "Add New Products":
-                    addProduct();
-                    break;
-                case "Exit":
-                    process.exit();
-                    break;
-            }
-        });
+    })
+    .then(function (answer) {
+        switch (answer.managerOptions) {
+            case "View Products for Sale":
+                printInventory();
+                break;
+            case "View Low Inventory":
+                lowInventory();
+                break;
+            case "Add To Inventory":
+                addInventory();
+                break;
+            case "Add New Products":
+                addProduct();
+                break;
+            case "Exit":
+                process.exit();
+                break;
+        }
+    });
 };
+
 
 function printInventory() {
 
@@ -64,6 +68,7 @@ function printInventory() {
 
     });
 };
+
 
 function lowInventory() {
 
@@ -86,47 +91,85 @@ function lowInventory() {
     });
 };
 
-function addProduct() {
+
+function addInventory() {
     inquirer.prompt([{
-        name: "newProduct",
-        type: "input",
-        message: "Enter new product name: "
-    },
-    {
-        name: "newDept",
-        type: "list",
-        message: "Enter department of new item: ",
-        choices: [
-            "camping",
-            "accessories",
-            "apparel"
-        ]
-    },
-    {
-        name: "newPrice",
-        type: "input",
-        message: "Enter price of new item: "
-    },
-    {
-        name: "newQuantity",
-        type: "input",
-        message: "Enter quantity of new item: "
-    }])
-    .then( function(answer){
-        var query = `INSERT INTO products (product_name, department_name, price, stock_quantity) 
-        VALUES ("${answer.newProduct}", "${answer.newDept}", ${Number(answer.newPrice)}, ${answer.newQuantity});`
+            name: "addInventory",
+            type: "input",
+            message: "Insert product item name to increase inventory: ",
+        },
+        {
+            name: "addQty",
+            type: "input",
+            message: "Insert the number of items to add to the inventory: ",
+            validate: function(addQty) {
+                if (isNumber(addQty) && addQty > 0){
+                    return true;
+                } else {
+                    return false;
+                };
+            }
+        }
+    ])
+    .then(function (answer) {
+        var query = `UPDATE products
+        SET stock_quantity = stock_quantity + ${answer.addQty}
+        WHERE product_name = "${answer.addInventory}";`;
 
-        connection.query(query, function(err){
+        connection.query(query, function (err) {
             if (err) throw err;
-            console.log("Item added successfully!");
-            
+                console.log("Inventory Updated!")
             runManager();
+            }
 
-        });
+        )
     })
 };
 
-function addInventory() {
-    console.log("Add New Products");
-    runManager();
+
+function addProduct() {
+    inquirer.prompt([{
+            name: "newProduct",
+            type: "input",
+            message: "Enter new product name: "
+        },
+        {
+            name: "newDept",
+            type: "list",
+            message: "Enter department of new item: ",
+            choices: [
+                "camping",
+                "accessories",
+                "apparel"
+            ]
+        },
+        {
+            name: "newPrice",
+            type: "input",
+            message: "Enter price of new item: "
+        },
+        {
+            name: "newQuantity",
+            type: "input",
+            message: "Enter quantity of new item: ",
+            validate: function(newQuantity) {
+                if (isNumber(newQuantity) && newQuantity > 0){
+                    return true;
+                } else {
+                    return false;
+                };
+            }
+        }
+    ])
+    .then(function (answer) {
+        var query = `INSERT INTO products (product_name, department_name, price, stock_quantity) 
+        VALUES ("${answer.newProduct}", "${answer.newDept}", ${Number(answer.newPrice)}, ${answer.newQuantity});`
+
+        connection.query(query, function (err) {
+            if (err) throw err;
+            console.log("Item added successfully!");
+
+            runManager();
+        });
+    })
 };
