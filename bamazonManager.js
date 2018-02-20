@@ -87,7 +87,7 @@ function lowInventory() {
         if (err) throw err;
 
         if (response.length === 0) {
-            console.log("No low inventory")
+            console.log("\nNo low inventory\n")
         } else {
             console.log(`---------------------\nWarehouse Stock:\n---------------------`)
             for (var i = 0; i < response.length; i++) {
@@ -129,7 +129,7 @@ function addInventory() {
 
         connection.query(query, function (err) {
             if (err) throw err;
-                console.log("Inventory Updated!")
+                console.log("\nInventory Updated!\n")
             runManager();
             }
 

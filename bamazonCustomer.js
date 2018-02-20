@@ -111,7 +111,7 @@ function quantityCheck() {
         if (requestQty <= availableQty) {
             successfulOrder();
         } else {
-            console.log(`Insufficient quantity in warehouse. There are ${availableQty} available.`)
+            console.log(`\nInsufficient quantity in warehouse. There are ${availableQty} available.\n`)
             adjustOrder();
         };
     });
@@ -138,7 +138,7 @@ function calculateCost() {
         if (err) throw err;
         var databasePrice = response[0].price;
         var cost = (databasePrice * requestQty).toFixed(2);
-        console.log(`Successful Order! Total cost: $${cost}`);
+        console.log(`\nSuccessful Order! Total cost: $${cost}\n`);
         anotherPurchase();
     });
 };
@@ -173,7 +173,7 @@ function anotherPurchase() {
         if (answer.done) {
             printInventory();
         } else {
-            console.log("Thank you for shopping with Bamazon today!")
+            console.log("\nThank you for shopping with Bamazon today!\n")
             process.exit();
         };
     });
