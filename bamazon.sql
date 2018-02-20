@@ -30,7 +30,7 @@ INSERT INTO products (product_name, department_name, price, stock_quantity)
 VALUES ("wool socks", "apparel", 12.67, 50);
 
 INSERT INTO products (product_name, department_name, price, stock_quantity)
-VALUES ("water bottle", "accessories", 7.50, 100);
+VALUES ("water bottle", "accessories", 7.54, 100);
 
 INSERT INTO products (product_name, department_name, price, stock_quantity)
 VALUES ("pocket knife", "accessories", 15.45, 75);

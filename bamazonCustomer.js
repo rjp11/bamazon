@@ -1,6 +1,12 @@
 var mysql = require("mysql");
 var inquirer = require("inquirer");
 var isNumber = require('is-number');
+const {table} = require('table');
+let data, 
+    output;
+data = [
+    ["ID", "PRODUCT", "PRICE"]
+];
 
 var connection = mysql.createConnection({
     host: "localhost",
@@ -21,6 +27,7 @@ connection.connect(function (err) {
     launchBamazon();
 });
 
+
 function launchBamazon() {
     // confirm launch of Bamazon
     console.log(`
@@ -30,7 +37,8 @@ function launchBamazon() {
     -------------------------------`);
     // display available items & price
     printInventory();
-}
+};
+
 
 function printInventory() {
     var query = "SELECT * FROM products;";
@@ -40,14 +48,19 @@ function printInventory() {
         for (var i = 0; i < response.length; i++) {
             // only display items that are in stock  
             if (response[i].stock_quantity > 0 ){
-                console.log(`\nID: ${response[i].id} || Product: ${response[i].product_name} || Price: $${response[i].price}`);
+                data[ i + 1 ] = [response[i].id, response[i].product_name, `$${response[i].price}`];
+            } else {
+                data[ i + 1 ] = [response[i].id, response[i].product_name, 'Out of stock'];
             };
         };
+        output = table(data);
+        console.log(output);
         // prompt user for ID of item to purchase
         promptItemID()
     });
 
 };
+
 
 // prompts user for ID 3 of item to purchase
 // queries the database and stores the available quantity of that item
@@ -75,6 +88,7 @@ function promptItemID() {
         });
     });
 };
+
 
 // propmt user for quantity of order and checks against 
 // quantity in database
@@ -104,6 +118,7 @@ function quantityCheck() {
 
 };
 
+
 function successfulOrder() {
     // update quantity in database;
     var newQty = availableQty - requestQty;
@@ -114,6 +129,7 @@ function successfulOrder() {
     });
 };
 
+
 // funciton to calculate the cost of the order
 function calculateCost() {
     // get unit quantity for item
@@ -121,11 +137,12 @@ function calculateCost() {
     connection.query(`${query}`, function (err, response) {
         if (err) throw err;
         var databasePrice = response[0].price;
-        var cost = databasePrice * requestQty;
+        var cost = (databasePrice * requestQty).toFixed(2);
         console.log(`Successful Order! Total cost: $${cost}`);
         anotherPurchase();
     });
 };
+
 
 // function to adjust user order quantity if request 
 // was higher than inventory quantity
@@ -134,22 +151,25 @@ function adjustOrder() {
         name: "adjustOrder",
         type: "confirm",
         message: "Would you like adjust your order?"
-    }).then(function (answer) {
+    })
+    .then(function (answer) {
         if (answer.adjustOrder) {
             quantityCheck();
         } else {
-            console.log("Sorry we don't have the quantity that you need. Come back soon as we frequently restock our warehouse!")
+            console.log("Sorry that we don't have the quantity that you need. Come back soon as we frequently restock our warehouse!")
             process.exit();
         };
     });
 };
+
 
 function anotherPurchase() {
     inquirer.prompt({
         name: "done",
         type: "confirm",
         message: "Would you like to place another order?"
-    }).then(function (answer) {
+    })
+    .then(function (answer) {
         if (answer.done) {
             printInventory();
         } else {

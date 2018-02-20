@@ -20,6 +20,7 @@
   "dependencies": {
     "inquirer": "^5.1.0",
     "is-number": "^5.0.0",
-    "mysql": "^2.15.0"
+    "mysql": "^2.15.0",
+    "table": "^4.0.2"
   }
 }
