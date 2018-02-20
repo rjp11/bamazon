@@ -70,7 +70,7 @@ function promptItemID() {
         type: "input",
         message: "Enter ID of item you'd like to purchase: ",
         validate: function (orderID) {
-            if (isNumber(orderID) && orderID <= 10 && orderID > 0){
+            if (isNumber(orderID) && orderID <= 50 && orderID > 0){
                 return true;
             } else {
                 return false;
@@ -83,8 +83,13 @@ function promptItemID() {
         connection.query(query, {
             id: orderID,
         }, function (err, response) {
-            availableQty = response[0].stock_quantity;
-            quantityCheck();
+            if (err){
+                console.log(`\nInvalid product ID entry.\n`);
+                promptItemID();
+            } else {
+                availableQty = response[0].stock_quantity;
+                quantityCheck();
+            }
         });
     });
 };

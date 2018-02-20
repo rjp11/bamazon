@@ -5,10 +5,14 @@ const {table} = require('table');
 let data, 
     output,
     config;
-data = [
-    ["ID", "PRODUCT", "PRICE", "QUANTITY"]
-];
 
+resetData();
+
+function resetData(){
+    data = [
+        ["ID", "PRODUCT", "PRICE", "QUANTITY"]
+    ];
+};
 
 
 var connection = mysql.createConnection({
@@ -80,7 +84,7 @@ function printInventory() {
 
 
 function lowInventory() {
-
+    resetData();
     var query = "Select * FROM products WHERE stock_quantity <= 5";
 
     connection.query(query, function (err, response) {
