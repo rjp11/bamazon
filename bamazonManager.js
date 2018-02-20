@@ -1,6 +1,15 @@
 var mysql = require("mysql");
 var inquirer = require("inquirer");
 var isNumber = require('is-number');
+const {table} = require('table');
+let data, 
+    output,
+    config;
+data = [
+    ["ID", "PRODUCT", "PRICE", "QUANTITY"]
+];
+
+
 
 var connection = mysql.createConnection({
     host: "localhost",
@@ -59,8 +68,10 @@ function printInventory() {
         if (err) throw err;
         // loop to iterate over the inventory databse and print results
         for (var i = 0; i < response.length; i++) {
-            console.log(`\nID: ${response[i].id} || Product: ${response[i].product_name} || Price: $${response[i].price} || Quantity: ${response[i].stock_quantity}`);
+            data[ i + 1 ] = [response[i].id, response[i].product_name, `$${response[i].price}`, response[i].stock_quantity];
         };
+        output = table(data, config);
+        console.log(output);
 
         runManager();
 
@@ -78,10 +89,12 @@ function lowInventory() {
         if (response.length === 0) {
             console.log("No low inventory")
         } else {
-            console.log(`---------------\nWarehouse Stock:\n---------------`)
+            console.log(`---------------------\nWarehouse Stock:\n---------------------`)
             for (var i = 0; i < response.length; i++) {
-                console.log(`${response[i].product_name}: ${response[i].stock_quantity}\n`);
+                data[ i + 1 ] = [response[i].id, response[i].product_name, `$${response[i].price}`, response[i].stock_quantity];
             };
+            output = table(data, config);
+            console.log(output);
         };
 
         runManager();
@@ -94,7 +107,7 @@ function addInventory() {
     inquirer.prompt([{
             name: "addInventory",
             type: "input",
-            message: "Insert product item name to increase inventory: ",
+            message: "Insert product item id to increase inventory: ",
         },
         {
             name: "addQty",
@@ -112,7 +125,7 @@ function addInventory() {
     .then(function (answer) {
         var query = `UPDATE products
         SET stock_quantity = stock_quantity + ${answer.addQty}
-        WHERE product_name = "${answer.addInventory}";`;
+        WHERE id = "${answer.addInventory}";`;
 
         connection.query(query, function (err) {
             if (err) throw err;
