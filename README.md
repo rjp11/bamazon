@@ -12,4 +12,4 @@ To make a purchase from Bamazon:
 * Enter `node bamazonCustomer.js` into the command line. A list of products will be displayed with their cost.
 * Follow the prompts on the screen!
     
-![alt text](https://github.com/rjp11/bamazon/blob/master/images/bamCust.mov)
+![alt text](https://github.com/rjp11/bamazon/blob/master/images/bamCust.gif)
