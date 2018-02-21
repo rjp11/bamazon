@@ -29,6 +29,7 @@ connection.connect(function (err) {
     runManager();
 });
 
+
 function runManager() {
     inquirer.prompt({
         name: "managerOptions",

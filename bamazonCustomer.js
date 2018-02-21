@@ -83,13 +83,10 @@ function promptItemID() {
         connection.query(query, {
             id: orderID,
         }, function (err, response) {
-            if (err){
-                console.log(`\nInvalid product ID entry.\n`);
-                promptItemID();
-            } else {
-                availableQty = response[0].stock_quantity;
-                quantityCheck();
-            }
+            if (err) throw err;
+            availableQty = response[0].stock_quantity;
+            quantityCheck();
+
         });
     });
 };
@@ -161,7 +158,7 @@ function adjustOrder() {
         if (answer.adjustOrder) {
             quantityCheck();
         } else {
-            console.log("Sorry that we don't have the quantity that you need. Come back soon as we frequently restock our warehouse!")
+            console.log("\nSorry that we don't have the quantity that you need. Come back soon as we frequently restock our warehouse!\n")
             process.exit();
         };
     });
