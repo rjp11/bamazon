@@ -183,7 +183,7 @@ function addProduct() {
 
         connection.query(query, function (err) {
             if (err) throw err;
-            console.log("Item added successfully!");
+            console.log("\nItem added successfully!\n");
 
             runManager();
         });
