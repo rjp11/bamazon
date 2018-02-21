@@ -7,7 +7,7 @@ There are two CLIs for bamazon:
     * manager interface
 
 ## Customer Interface:
-    To make a purchase from Bamazon, download the repository and call that directory in the terminal.
-    Enter `node bamazonCustomer.js` into the command line. A list of products will be displayed with their cost.
+To make a purchase from Bamazon, download the repository and call that directory in the terminal.
+Enter `node bamazonCustomer.js` into the command line. A list of products will be displayed with their cost.
     
-    ![alt text](https://github.com/rjp11/bamazon/blob/master/images/bc1.png)
+![alt text](https://github.com/rjp11/bamazon/blob/master/images/bc1.png)
