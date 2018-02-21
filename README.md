@@ -54,3 +54,14 @@ To utilize the manager functionality:
 
 ![bamazon manager add product ](https://github.com/rjp11/bamazon/blob/master/images/bamManager5.png)
 
+## Components
+This CLI app is built with
+* MySQL
+* NPM mysql
+* NPM inquirer
+* NPM is-number
+* NPM table
+
+download the repository
+github username rjp11
+
